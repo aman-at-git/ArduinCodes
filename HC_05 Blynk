@@ -1,0 +1,21 @@
+#define BLYNK_PRINT Serial
+
+#include <SoftwareSerial.h>
+SoftwareSerial SwSerial(10, 11); // RX, TX
+
+#include <BlynkSimpleSerialBLE.h>
+
+char auth[] = "AuthToken";
+
+void setup()
+{
+  Serial.begin(9600);
+  SerialBLE.begin(9600);
+  Blynk.begin(SerialBLE, auth);
+  Serial.println("Waiting for connections...");
+}
+
+void loop()
+{
+  Blynk.run();
+}
