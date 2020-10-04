@@ -1,0 +1,92 @@
+#define BLYNK_PRINT Serial
+
+
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+char auth[] = "YourAuthToken";
+
+char ssid[] = "YourNetworkName";
+char pass[] = "YourPassword";
+
+const int LMF = 7;        //LEFT MOTER CLOCKWISE
+const int LMB = 8;        //LEFT MOTER ANTI-CLOCKWISE
+const int RMF = 12;       //RIGHT MOTER CLOCKWISE
+const int RMB = 13;       //RIGHT MOTER ANTI-CLOCKWISE
+
+void moveForward() {
+  digitalWrite(LMF,HIGH);
+  digitalWrite(LMB,LOW);
+  digitalWrite(RMF,HOGH);
+  digitalWrite(RMB,LOW);
+}
+
+void moveBackward() {
+  digitalWrite(LMF,LOW);
+  digitalWrite(LMB,HIGH);
+  digitalWrite(RMF,LOW);
+  digitalWrite(RMB,HIGH);
+}
+
+void turnRight() {
+  digitalWrite(LMF,HIGH);
+  digitalWrite(LMB,LOW);
+  digitalWrite(RMF,LOW);
+  digitalWrite(RMB,HIGH);
+  delay(1000);
+}  
+
+void turnLeft() {
+  digitalWrite(LMF,LOW);
+  digitalWrite(LMB,HIGH);
+  digitalWrite(RMF,HIGH);
+  digitalWrite(RMB,LOW);
+  delay(1000);
+} 
+
+BLYNK_WRITE(V1)
+{
+  int pinValue = param.asInt();
+  if(pinValue){
+    moveForward();
+  }
+}
+
+BLYNK_WRITE(V2)
+{
+  int pinValue = param.asInt();
+  if(pinValue){
+    moveBackward();
+  }
+}
+
+BLYNK_WRITE(V3)
+{
+  int pinValue = param.asInt();
+  if(pinValue){
+    turnLeft();
+  }
+}
+
+BLYNK_WRITE(V4)
+{
+  int pinValue = param.asInt();
+  if(pinValue){
+    turnRight();
+  }
+}
+
+void setup()
+{
+  Serial.begin(9600);
+  Blynk.begin(auth, ssid, pass);
+  pinMode(LMF, OUTPUT);
+  pinMode(LMB, OUTPUT);
+  pinMode(RMF, OUTPUT);
+  pinMode(RMB, OUTPUT);
+}
+
+void loop()
+{
+  Blynk.run();
+}
